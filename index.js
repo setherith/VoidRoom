@@ -9,10 +9,9 @@ app.engine('hbs', cons.handlebars);
 app.set('view engine', 'hbs');
 app.set('views', __dirname + '/views');
 
-bars.registerPartial('footer', fs.readFileSync(__dirname + '/views/partials/footer.hbs', 'utf8'));
-
 app.use('/', function(req, res) {
-    res.render('index', {
+    bars.registerPartial('content', fs.readFileSync(__dirname + '/views/index.hbs', 'utf8'));
+    res.render('layout', {
         title : 'This is a test'
     });
 });
