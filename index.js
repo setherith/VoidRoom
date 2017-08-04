@@ -7,11 +7,8 @@ var dburl = "mongodb://localhost:27017/voidroom";
 
 mongoClient.connect(dburl, function(err, db) {
     if(err) throw err;
-    console.log('Database created!');
-
     db.createCollection('rooms', function(err, res) {
         if(err) throw err;
-        console.log('Table Created!');
         db.close();
     });
 });
@@ -38,7 +35,6 @@ app.get('/add', function(req, res) {
         if(err) throw err;
         db.collection('rooms').find().toArray(function(err, result) {
             if(err) throw err;
-            console.log(result);
             db.close();
             res.render('add', {title: 'Add Room', rooms: result});
         });
@@ -49,7 +45,6 @@ app.post('/add', function(req, res) {
     mongoClient.connect(dburl, function(err, db) {
         db.collection('rooms').insertOne({name:req.body.name}, function(err, res) {
             if(err) throw err;
-            console.log('Room added!');
             db.close();
         });
     });
