@@ -1,13 +1,12 @@
 <h3>Add Room</h3>
 
-<form action="/add" method="post">
+<form action="/add" method="post" class="col-md-6">
     <div class="form-group">
         <label for="name">Room Name:</label>
         <input name="name" type="text" class="form-control" autocomplete="off">
     </div>
-    <button class="btn btn-default">Add</button>
+    <button class="btn btn-primary">Add</button>
 </form>
-
 
 {{#if room}}
     <div class="modal show" id="modaldiag">
