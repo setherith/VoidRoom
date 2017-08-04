@@ -2,7 +2,8 @@ var hbs = require('hbs');
 var bodyParser = require('body-parser');
 
 var mongo = require('mongodb');
-var mongoClient = mongo.MongoClient();
+var mongoClient = mongo.MongoClient;
+var mongoObjectId = mongo.ObjectID;
 var dburl = "mongodb://localhost:27017/voidroom";
 
 mongoClient.connect(dburl, function(err, db) {
@@ -44,9 +45,8 @@ app.get('/add', function(req, res) {
 app.get('/delete/:id', function(req, res) {
     mongoClient.connect(dburl, function(err, db) {
         if(err) throw err;
-        db.collection('rooms').deleteOne({_id: req.params.id}, function(err, result) {
+        db.collection('rooms').deleteOne({_id: mongoObjectId(req.params.id)}, function(err, result) {
             if(err) throw err;
-            console.log('Deleting: ' + result.result.n);
             db.close();
         });
     });
