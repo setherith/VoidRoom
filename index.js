@@ -49,7 +49,13 @@ app.post('/add', function(req, res) {
         });
     });
 
-    res.render('add', {room:req.body.name, title: 'Add Room'});
+    mongoClient.connect(dburl, function(err, db) {
+        db.collection('rooms').find().toArray(function(err, result) {
+            if(err) throw err;
+            db.close();
+            res.render('add', {room:req.body.name, title: 'Add Room', rooms: result});
+        });
+    });
 });
 
 app.listen(3000, function() {
