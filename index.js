@@ -37,7 +37,7 @@ app.get('/add', function(req, res) {
         db.collection('rooms').find().toArray(function(err, result) {
             if(err) throw err;
             db.close();
-            res.render('add', {title: 'Add Room', rooms: result, canDelete: true, canEdit: true});
+            res.render('add', {title: 'Add Room', rooms: result, canDelete: true, canEdit: true, count: result.length});
         });
     });
 });
