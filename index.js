@@ -1,6 +1,21 @@
 var hbs = require('hbs');
 var bodyParser = require('body-parser');
 
+var mongo = require('mongodb');
+var mongoClient = mongo.MongoClient();
+var dburl = "mongodb://localhost:27017/voidroom";
+
+mongoClient.connect(dburl, function(err, db) {
+    if(err) throw err;
+    console.log('Database created!');
+
+    db.createCollection('rooms', function(err, res) {
+        if(err) throw err;
+        console.log('Table Created!');
+        db.close();
+    });
+});
+
 var express = require('express');
 var app = express();
 
@@ -19,11 +34,26 @@ app.get('/', function(req, res) {
 });
 
 app.get('/add', function(req, res) {
-    res.render('add', {title: 'Add Room'});
+    mongoClient.connect(dburl, function(err, db) {
+        if(err) throw err;
+        db.collection('rooms').find().toArray(function(err, result) {
+            if(err) throw err;
+            console.log(result);
+            db.close();
+            res.render('add', {title: 'Add Room', rooms: result});
+        });
+    });
 });
 
 app.post('/add', function(req, res) {    
-    // console.log(req.body.name); //value[s] from the forms
+    mongoClient.connect(dburl, function(err, db) {
+        db.collection('rooms').insertOne({name:req.body.name}, function(err, res) {
+            if(err) throw err;
+            console.log('Room added!');
+            db.close();
+        });
+    });
+
     res.render('add', {room:req.body.name, title: 'Add Room'});
 });
 
