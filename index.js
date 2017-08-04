@@ -36,9 +36,21 @@ app.get('/add', function(req, res) {
         db.collection('rooms').find().toArray(function(err, result) {
             if(err) throw err;
             db.close();
-            res.render('add', {title: 'Add Room', rooms: result});
+            res.render('add', {title: 'Add Room', rooms: result, canDelete: true, canEdit: true});
         });
     });
+});
+
+app.get('/delete/:id', function(req, res) {
+    mongoClient.connect(dburl, function(err, db) {
+        if(err) throw err;
+        db.collection('rooms').deleteOne({_id: req.params.id}, function(err, result) {
+            if(err) throw err;
+            console.log('Deleting: ' + result.result.n);
+            db.close();
+        });
+    });
+    res.redirect('/add');
 });
 
 app.post('/add', function(req, res) {    

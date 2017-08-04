@@ -13,7 +13,11 @@
     <h3>Existing Rooms</h3>
     <table class="table">
         {{#each rooms}}
-            <tr><td>{{name}}</td></tr>
+            <tr>
+                <td>{{name}}</td>
+                {{#if ../canDelete}}<td><a href="/delete/{{_id}}">Delete</a></td>{{/if}}
+                {{#if ../canEdit}}<td><a href="#">Edit</a></td>{{/if}}
+            </tr>
         {{/each}}
     </table>
 </div>
